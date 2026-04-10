@@ -54,8 +54,8 @@ export const offBitDot = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'WABS Lab — Animation Pattern Archive',
-  description: '024 open-source GSAP animation patterns. Pull one.',
+  title: 'WABS Lab - Animation Pattern Archive',
+  description: '024 open-source GSAP animation patterns.',
 }
 
 export default function RootLayout({
