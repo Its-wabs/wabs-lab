@@ -1,148 +1,10 @@
 'use client'
 
 import { useGSAP } from '@gsap/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import gsap from 'gsap'
-
-const PATTERNS = {
-  creative: [
-    {
-      id: '001',
-      name: 'Constellation Nav',
-      sub: 'MotionPath · quickTo · orbital',
-    },
-    {
-      id: '002',
-      name: 'Liquid Transition',
-      sub: 'SVG clipPath · blob morph · cursor',
-    },
-    {
-      id: '003',
-      name: 'SVG Displacement',
-      sub: 'feTurbulence · feDisplacementMap · GSAP',
-    },
-    {
-      id: '004',
-      name: 'Arabic Letter Physics',
-      sub: 'SplitText · CustomEase · RTL spring',
-    },
-  ],
-  hover: [
-    { id: '005', name: 'Magnetic Pull', sub: 'quickTo · proximity · lerp' },
-    { id: '006', name: 'Tilt Card', sub: 'mousemove · rotateX · rotateY' },
-    { id: '007', name: 'Cursor Follow', sub: 'quickTo · offset · smooth' },
-    {
-      id: '008',
-      name: 'Distortion Hover',
-      sub: 'SVG filter · baseFrequency · scale',
-    },
-    {
-      id: '009',
-      name: 'Elastic Underline',
-      sub: 'scaleX · transformOrigin · elastic',
-    },
-    { id: '010', name: 'Reveal on Hover', sub: 'clipPath · height · stagger' },
-    {
-      id: '011',
-      name: '3D Flip Card',
-      sub: 'rotateY · backface · perspective',
-    },
-    { id: '012', name: 'Ghost Trail', sub: 'clone · opacity · stagger' },
-    { id: '013', name: 'Morph SVG', sub: 'MorphSVGPlugin · path data' },
-  ],
-  text: [
-    {
-      id: '014',
-      name: 'Clip Reveal',
-      sub: 'SplitText · yPercent · overflow hidden',
-    },
-    {
-      id: '015',
-      name: 'Scramble Text',
-      sub: 'ScrambleTextPlugin · chars · speed',
-    },
-    { id: '016', name: 'Counter Up', sub: 'ScrollTrigger · snap · ease' },
-    {
-      id: '017',
-      name: 'Char Stagger',
-      sub: 'SplitText · stagger · from center',
-    },
-    { id: '018', name: 'Typewriter', sub: 'SplitText · duration · stagger' },
-    {
-      id: '019',
-      name: 'Word Shuffle',
-      sub: 'SplitText · yPercent · stagger grid',
-    },
-    {
-      id: '020',
-      name: 'Highlight Sweep',
-      sub: 'scaleX · transformOrigin · color',
-    },
-    {
-      id: '021',
-      name: '3D Text Flip',
-      sub: 'rotateX · SplitText · perspective',
-    },
-    { id: '022', name: 'Glitch Text', sub: 'x · skewX · repeat · timeline' },
-    {
-      id: '023',
-      name: 'Kinetic Tracks',
-      sub: 'ScrollTrigger · scrub · multi-dir',
-    },
-  ],
-  scroll: [
-    {
-      id: '024',
-      name: 'Parallax Layers',
-      sub: 'ScrollTrigger · scrub · depth',
-    },
-    { id: '025', name: 'Pin + Scrub', sub: 'pin · scrub · anticipatePin' },
-    { id: '026', name: 'Horizontal Scroll', sub: 'xPercent · pin · scrub' },
-    { id: '027', name: 'Reveal on Enter', sub: 'ScrollTrigger · once · start' },
-    {
-      id: '028',
-      name: 'Stagger Reveal',
-      sub: 'ScrollTrigger · batch · stagger',
-    },
-    { id: '029', name: 'Progress Bar', sub: 'scaleX · scrub · ease none' },
-    { id: '030', name: 'Section Wipe', sub: 'clipPath · pin · scrub' },
-    { id: '031', name: 'Lenis Smooth', sub: 'Lenis · ScrollTrigger · lerp' },
-    { id: '032', name: 'Sticky Sidebar', sub: 'pin · end · scrub 0' },
-    {
-      id: '033',
-      name: 'Image Sequence',
-      sub: 'canvas · ScrollTrigger · scrub',
-    },
-    {
-      id: '034',
-      name: '3D Card Scroll',
-      sub: 'rotateX · ScrollTrigger · scrub',
-    },
-    { id: '035', name: 'Zoom Section', sub: 'scale · pin · scrub' },
-  ],
-  entrance: [
-    { id: '036', name: 'Fade Up', sub: 'opacity · y · power3.out' },
-    { id: '037', name: 'Scale In', sub: 'scale · opacity · back.out' },
-    { id: '038', name: 'Slide In', sub: 'xPercent · ease · stagger' },
-    { id: '039', name: 'Blur Reveal', sub: 'filter blur · opacity · duration' },
-    {
-      id: '040',
-      name: 'Rotate In',
-      sub: 'rotation · transformOrigin · elastic',
-    },
-    {
-      id: '041',
-      name: 'Stagger Grid',
-      sub: 'scale · stagger grid from center',
-    },
-    {
-      id: '042',
-      name: 'Clip from Left',
-      sub: 'clipPath inset · duration · ease',
-    },
-    { id: '043', name: 'Satin Fabric', sub: 'R3F · Verlet cloth · WebGL' },
-  ],
-}
+import PatternModal, { PatternData } from '@/components/ui/patternmodal'
+import { PATTERNS } from '@/lib/constants/patterns'
 
 const CATEGORIES = [
   { key: 'creative' as const, label: 'CREATIVE', offset: '4%' },
@@ -155,6 +17,20 @@ const CATEGORIES = [
 export default function Page() {
   const container = useRef<HTMLDivElement>(null)
 
+  const [activePattern, setActivePattern] = useState<PatternData | null>(null)
+  const [originRect, setOriginRect] = useState<DOMRect | null>(null)
+
+  // Handle Tab Clicks
+  const handleTabClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    pattern: any,
+    catKey: string
+  ) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setOriginRect(rect)
+    setActivePattern({ ...pattern, category: catKey })
+  }
+
   useGSAP(
     () => {
       //  INITIAL SETUP
@@ -162,8 +38,7 @@ export default function Page() {
         opacity: 0,
         y: -10,
       })
-
-      // Drawer starts Centered and flat (0deg)
+      // Drawer starts Centered and flat
       gsap.set('.drawer', {
         opacity: 0,
         rotateX: 0,
@@ -184,11 +59,21 @@ export default function Page() {
       const masterTl = gsap.timeline({
         defaults: { ease: 'expo.inOut' },
       })
+      /*
+      const mm = gsap.matchMedia();
 
+mm.add("(max-height: 800px)", () => {
+  gsap.set('.drawer', { scale: 0.82, transformOrigin: 'bottom center' });
+});
+*/
       masterTl
         // STEP A: THE SPLIT & 2D REVEAL
-        .to('.introTop', { yPercent: -100, duration: 1.2 }, 0.2)
-        .to('.introBottom', { yPercent: 100, duration: 1.2 }, 0.2)
+        .to('.load-l', { width: '100vw', duration: 2, ease: 'power1.in' }, 0)
+        .to('.load-r', { width: '100vw', duration: 2, ease: 'power1.in' }, 0)
+        .to('.load-l', { opacity: 0, duration: 0.1, ease: 'power1.in' }, 2.1)
+        .to('.load-r', { opacity: 0, duration: 0.1, ease: 'power1.in' }, 2.1)
+        .to('.introTop', { yPercent: -100, duration: 1.2 }, 2.2)
+        .to('.introBottom', { yPercent: 100, duration: 1.2 }, 2.2)
         .to(
           '.drawer',
           {
@@ -360,13 +245,25 @@ export default function Page() {
 
   return (
     <div className="container-wrapper" ref={container}>
+      {activePattern && originRect && (
+        <PatternModal
+          pattern={activePattern}
+          originRect={originRect}
+          onClose={() => setActivePattern(null)}
+        />
+      )}
+
       {/* INTRO OVERLAY */}
       <div className="introOverlay">
         {/* TOP CURTAIN */}
         <div className="introPart introTop">
-          <span className="introEyebrow">WABS LAB · ANIMATION LIBRARY</span>
+          <span className="introEyebrow">WABS LAB</span>
+          <span className="introSub">Animation library</span>
+
           <div className="introRule" />
         </div>
+        <div className="load-l bg-primary absolute top-1/2 left-1/2 h-0.5 w-0 -translate-x-1/2 -translate-y-1/2" />
+        <div className="load-r bg-primary absolute top-1/2 right-1/2 h-0.5 w-0 translate-x-1/2 -translate-y-1/2" />
 
         {/* BOTTOM CURTAIN */}
         <div className="introPart introBottom">
@@ -379,8 +276,12 @@ export default function Page() {
       <nav className="nav">
         <div className="navLogo">WABS LAB</div>
         <div className="navRight">
-          <span className="navLink">MANIFESTO</span>
-          <a href="https://github.com" className="navCta">
+          <span className="navLink">ABOUT</span>
+          <a
+            href="https://github.com/Its-wabs/wabs-lab"
+            target="empty"
+            className="navCta"
+          >
             ↗ GITHUB
           </a>
         </div>
@@ -396,7 +297,9 @@ export default function Page() {
             <span className="subPull">PULL ONE</span>
           </div>
           <div className="hidden">empty</div>
-          <button className="journeyBtn">START THE JOURNEY</button>
+          <button onClick={() => {}} className="journeyBtn">
+            journey mode
+          </button>
           <div className="subRight">
             {['ENTRANCE', 'SCROLL', 'TEXT', 'HOVER'].map((c) => (
               <span key={c} className="subCat">
@@ -407,15 +310,14 @@ export default function Page() {
         </div>
       </div>
 
-      {/* MAIN SCENE  */}
-      <main className="main">
+      <div className="main">
+        {/* ARCHIVE / DRAWER VIEW */}
         <div className="drawerScene">
           <div className="drawer">
             <div className="tabsStack">
               <div className="tabBacker" />
               {CATEGORIES.map((cat) => (
                 <div key={cat.key} className="categoryGroup">
-                  {/* Category divider */}
                   <div
                     className="categoryTab"
                     style={{ marginLeft: cat.offset }}
@@ -426,22 +328,20 @@ export default function Page() {
                     </span>
                   </div>
 
-                  {/* Pattern tabs */}
                   {PATTERNS[cat.key].map((p) => (
-                    <div key={p.id} className="patternTab">
+                    <div
+                      key={p.id}
+                      onClick={(e) => handleTabClick(e, p, cat.key)}
+                      className="patternTab"
+                    >
                       <div className="tabBody">
-                        {/* FILE EAR */}
                         <div className="tabEar">
                           <span className="tabId">{p.id}</span>
                         </div>
-
-                        {/* CONTENT */}
                         <div className="tabContent">
                           <span className="tabName">{p.name}</span>
                           <span className="tabSub">{p.sub}</span>
                         </div>
-
-                        {/* ARROW */}
                         <span className="tabArrow">↗</span>
                       </div>
                     </div>
@@ -450,32 +350,41 @@ export default function Page() {
               ))}
             </div>
 
-            {/* Drawer chrome  */}
             <div className="drawerFloor" />
             <div className="drawerBase">
               <div className="drawerHandle" />
             </div>
           </div>
         </div>
-      </main>
-
-      {/* Bottom label strip*/}
-      <div className="drawerBottom">
-        <span className="drawerLabel">WABS LAB V1 · FREE FOREVER</span>
       </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <span className="footLeft">
-          DESIGNED AND BUILT BY{' '}
-          <span className="footWabs">
-            <a href="http://itswabs.vercel.app/" target="empty">
-              WABS
-            </a>
+      <div className="mobileGate">
+        <h1>
+          THIS DRAWER DOESN'T FIT IN YOUR POCKET.
+          <br />
+          <span>DESKTOP ONLY</span> FOR NOW.
+        </h1>
+      </div>
+
+      {/* Bottom label strip*/}
+      <div className="lab-footer-overlay">
+        <div className="drawerBottom">
+          <span className="drawerLabel">WABS LAB V1 · FREE FOREVER</span>
+        </div>
+
+        {/* Footer */}
+        <footer className="footer">
+          <span className="footLeft">
+            DESIGNED AND BUILT BY{' '}
+            <span className="footWabs">
+              <a href="http://itswabs.vercel.app/" target="empty">
+                WABS
+              </a>
+            </span>
           </span>
-        </span>
-        <span className="footRight">V 1.0 — 2025</span>
-      </footer>
+          <span className="footRight">V 1.0 - 2026</span>
+        </footer>
+      </div>
     </div>
   )
 }

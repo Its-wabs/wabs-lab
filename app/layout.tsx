@@ -68,7 +68,9 @@ export default function RootLayout({
       lang="en"
       className={` ${offBit.variable} ${offBit101.variable} ${offBitDot.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <main>{children}</main>
+      </body>
     </html>
   )
 }
