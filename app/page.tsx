@@ -44,7 +44,7 @@ export default function Page() {
         (context) => {
           const { tiny, short } = context.conditions as any
 
-          const drawerScale = tiny ? 0.62 : short ? 0.85 : 1.3
+          const drawerScale = tiny ? 0.85 : short ? 1 : 1.3
 
           const drawerOrigin = '50% 100%'
 
