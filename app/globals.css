@@ -1480,7 +1480,6 @@ a {
 }
 
 .pm-paper-main .pm-code-panel-wrap pre {
-  overflow-x: hidden !important;
   white-space: pre-wrap !important;
   word-break: break-all !important;
 }

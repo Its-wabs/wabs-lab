@@ -8,7 +8,7 @@ export default function StaggerGrid() {
 
   useGSAP(
     () => {
-      // We target the specific class on the H1s
+      // We target the specific class on the h1 element
       gsap.from('.stagger-item', {
         y: 40,
         opacity: 0,
