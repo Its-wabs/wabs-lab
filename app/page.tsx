@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import gsap from 'gsap'
 import PatternModal, { PatternData } from '@/components/ui/patternmodal'
 import { PATTERNS } from '@/lib/constants/patterns'
+import { PixelArrow } from '@/components/ui/pixelArrow'
 
 const CATEGORIES = [
   { key: 'creative' as const, label: 'CREATIVE', offset: '4%' },
@@ -370,7 +371,9 @@ export default function Page() {
                           <span className="tabName">{p.name}</span>
                           <span className="tabSub">{p.sub}</span>
                         </div>
-                        <span className="tabArrow">↗</span>
+                        <span className="tabArrow">
+                          <PixelArrow />
+                        </span>
                       </div>
                     </div>
                   ))}
