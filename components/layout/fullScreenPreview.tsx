@@ -53,10 +53,7 @@ export default function InteractiveStage({
       <div className="pm-fs-stage">
         {/* The Paper Stack */}
         <div className="pm-fs-paper-back" />
-        <div
-          className="pm-fs-paper-front"
-          style={{ display: 'block', overflow: 'hidden' }}
-        >
+        <div className="pm-fs-paper-front">
           {SelectedPreview ? (
             <SelectedPreview />
           ) : (

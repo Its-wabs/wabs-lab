@@ -176,7 +176,7 @@ const CinematicEntrance = () => {
   return (
     <div
       ref={container}
-      className="bg-ink relative flex h-full w-full flex-col overflow-hidden text-[#E8E3D5]"
+      className="bg-ink relative box-border flex h-full w-full flex-col overflow-hidden p-10 text-[#E8E3D5]"
     >
       {/* BACKGROUND GRID */}
       <div className="pointer-events-none absolute inset-0 grid grid-cols-8 grid-rows-5 gap-1.25 p-0">
@@ -189,7 +189,7 @@ const CinematicEntrance = () => {
       </div>
 
       {/* NAV */}
-      <nav className="relative z-10 flex shrink-0 items-center justify-between px-8">
+      <nav className="relative z-10 flex shrink-0 items-center justify-between px-8 py-5">
         <div className="ce-nav font-offbit text-[9px] font-black tracking-[0.22em] text-[#e8e3d5]/50 uppercase">
           WABS / LAB
         </div>
@@ -243,7 +243,7 @@ const CinematicEntrance = () => {
       {/* FOOTER */}
       <footer className="relative z-10 flex shrink-0 items-center justify-between p-[0.65rem_1.75rem]">
         <span className="ce-meta font-offbit text-[8px] font-black tracking-[0.22em] text-[#e8e3d5]/20 uppercase">
-          Pattern 044 : Cinematic Entrance
+          Pattern 041 : Cinematic Entrance
         </span>
 
         <span className="ce-meta font-offbit text-ink3/35 text-[8px] font-black tracking-[0.18em] uppercase">

@@ -1069,11 +1069,9 @@ a {
   width: 70%;
   height: 90%;
   background: #eae5d3;
-  z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  z-index: 2;
   overflow: hidden;
   min-height: 0;
 }
@@ -1493,11 +1491,18 @@ a {
 .pm-code-panel {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
 }
 
 .pm-code-banner {
+  position: sticky;
+  top: -64px;
+  z-index: 20;
+  margin: -64px -64px 30px -64px;
+  padding: 64px 64px 20px 64px;
   display: flex;
+  background: #11110f;
   justify-content: space-between;
   font-size: 10px;
   color: var(--accent);
@@ -1505,7 +1510,6 @@ a {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 20px;
   margin-bottom: 30px;
-  opacity: 0.6;
 }
 
 .pm-code-pre {
@@ -1536,12 +1540,14 @@ a {
   margin-top: 8px;
   max-height: 220px;
   max-width: 100%;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
-.pm-paper-main .pm-code-panel-wrap pre {
+/* Using important here ( I dont like it ) is necessary to override default third party inline styles */
+.pm-code-panel-wrap .pm-code-wrapper span {
   white-space: pre-wrap !important;
-  word-break: break-all !important;
+  word-break: break-word !important;
 }
 
 /* When used in the right panel, fill the space */

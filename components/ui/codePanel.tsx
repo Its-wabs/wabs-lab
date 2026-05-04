@@ -47,6 +47,7 @@ export default function CodePanel({
         <div className="pm-code-wrapper custom-scrollbar" ref={codeWrapperRef}>
           <SyntaxHighlighter
             language={language}
+            wrapLongLines={true}
             style={coldarkDark}
             customStyle={{
               margin: 0,
@@ -54,6 +55,10 @@ export default function CodePanel({
               fontSize: '13px',
               background: 'transparent',
               lineHeight: '1.6',
+              overflowX: 'hidden',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+              overflowWrap: 'anywhere',
             }}
           >
             {code}

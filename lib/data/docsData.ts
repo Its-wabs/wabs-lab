@@ -96,7 +96,7 @@ export const DOCS_CONTENT: Record<string, PatternDoc> = {
 gsap.from(".slide-down", {
   y: "-100vh",
   duration: 1.2,
-  ease: "expo.out", // A snappier ease for downward movement
+  ease: "expo.out", // A snappier ease for downward movement 
 })`,
           label: 'SLIDE_VERTICAL.TS',
         },
@@ -220,5 +220,126 @@ gsap.from(".grid-cell", {
     useCases:
       'Bento-box layouts, photo galleries, dashboard widgets, and numeric keypads.',
     related: ['STAGGER FADE IN', 'SCALE STAGGER', 'BLUR REVEAL'],
+  },
+
+  '041': {
+    what: 'A reveal technique that uses the clip-path CSS property to create a wip effect, revealing the content from a specific direction like a curtain being pulled.',
+    how: [
+      {
+        text: 'We start with clip-path: inset(0% 100% 0% 0%). In CSS inset, the order is Top, Right, Bottom, Left. By setting the Right value to 100%, we push the visible area right edge all the way to the left, effectively hiding the content.',
+      },
+      {
+        text: 'GSAP is capable of complex string interpolation. When we animate to inset(0% 0% 0% 0%), GSAP smoothly transitions that 100% right-edge value down to 0%.',
+      },
+      {
+        text: "This technique is more performant than animating width or height because it doesn't trigger layout recalculations for child elements. Instead, it operates purely on the compositing layer, allowing for smoother animations even on complex DOM structures.",
+      },
+      {
+        text: "Pro-Tip: If you notice 'jagged' edges during the wipe, add 'will-change: clip-path' to the element. This forces the browser to handle the mask on the GPU for a smoother transition.",
+        code: {
+          label: 'PERFORMANCE.CSS',
+          language: 'css',
+          content: `.clip-target {
+  will-change: clip-path;
+  backface-visibility: hidden; /* Fixes rare Browser flickering */
+}`,
+        },
+      },
+      {
+        text: "While inset() handles standard wipes, complex shapes like triangles, stars, or diagonals require polygon() coordinates. To save time, use a tool like Bennett Feely's 'Clippy' to visually plot your points. Once you have the coordinates, you can pass them directly into a GSAP tween for a fluid transition between shapes.",
+        code: {
+          label: 'POLYGON_CLIP.TS',
+          language: 'typescript',
+          content: `// Morphing from a Triangle to a Square
+gsap.to('.clip-target', {
+  clipPath: 'polygon(0% 100%, 50% 0%, 100% 100%, 100% 100%)', // Triangle
+  duration: 1.2,
+  ease: 'expo.inOut'
+}).vars.start = {
+  clipPath: 'polygon(0% 100%, 0% 0%, 100% 0%, 100% 100%)'    // Square
+};`,
+        },
+      },
+
+      {
+        text: 'Quick Reference: Use this guide to determine which inset parameter controls each direction.',
+        code: {
+          label: 'INSET_DIRECTIONS.TXT',
+          language: 'text',
+          content: `
+  Parameter       | Direction        | Effect            
+ -----------------|------------------|---------------
+  inset(X% 0 0 0) | Top              | Wipe Down         
+  inset(0 X% 0 0) | Right            | Wipe Left         
+  inset(0 0 X% 0) | Bottom           | Wipe Up           
+  inset(0 0 0 X%) | Left             | Wipe Right        
+    `.trim(),
+        },
+      },
+    ],
+    useCases: 'Hero Section titles, image reveals, section transitions.',
+    related: ['CINEMATIC ENTRANCE', 'FADE SLIDE', 'GRID RADIUS REVEAL'],
+  },
+  '042': {
+    what: 'A high-production entrance sequence that combines all the entrance techniques we have seen so far to create a full entrance sequence',
+    how: [
+      {
+        text: 'Initiate the sequence with a background grid reveal. Using a "from: center" stagger on a low-opacity grid creates a visual anchor that draws the eye toward the center of the screen.',
+      },
+      {
+        text: "Mastering the Position Parameter: Use '>' to sequence after the previous tween, and '<' to synchronize with it.",
+        code: {
+          content: `// Start at 0s
+tl.to('.item', { opacity: 1 }, 0);
+
+// Sequence: Start after previous
+tl.to('.top-lid', { y: "-100vh" }, ">");
+
+// Sync: Start with previous
+tl.to('.bottom-lid', { y: "100vh" }, "<");`,
+          label: 'POSITION_LOGIC.TS',
+        },
+      },
+      {
+        text: 'Use clipPath with the inset() function to perform "wipe" reveals on layout frames. This is more performant than animating width/height as it avoids re-calculating the layout of child elements.',
+        code: {
+          content: `// Directional Frame Reveal
+tl.fromTo('.ce-frame',
+  { clipPath: 'inset(0% 100% 0% 0%)' },
+  {
+    clipPath: 'inset(0% 0% 0% 0%)',
+    duration: 1.1,
+    ease: 'expo.inOut',
+  }, 1.2)`,
+          label: 'CLIP_REVEAL.TS',
+        },
+      },
+
+      {
+        text: 'Performance Tip: When animating filters like blur, always animate TO a value of 0px. This allows the browser to potentially turn off the expensive filter layer once the animation is complete, saving GPU cycles.',
+      },
+      {
+        text: 'Bonus Tip: The Ghost Progress Bar, To create a progress tracker that stays perfectly in sync with a complex sequence add a Global Tracker tween at position 0. Set its duration to match your estimated total timeline length (e.g., 10s)',
+        code: {
+          content: `// Global Timeline Tracker
+tl.fromTo('.ce-progress',
+  { scaleX: 0, transformOrigin: 'left center' },
+  {
+    scaleX: 1,
+    duration: 10, // Matches the total sequence length
+    ease: 'none',
+  }, 0)`,
+          label: 'PROGRESS_SYNC.TS',
+        },
+      },
+    ],
+    useCases:
+      'Landing page hero sections, portfolio project intros, cinematic dashboards, and "Live Preview" transitions.',
+    related: [
+      'GRID STAGGER',
+      'CLIP PATH REVEAL',
+      'TIMELINE SEQUENCING',
+      'BLUR FADE IN',
+    ],
   },
 }
