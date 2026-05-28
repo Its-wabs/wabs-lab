@@ -6,6 +6,7 @@ import gsap from 'gsap'
 import PatternModal, { PatternData } from '@/components/ui/patternmodal'
 import { PATTERNS } from '@/lib/constants/patterns'
 import { PixelArrow } from '@/components/ui/pixelArrow'
+import { useRouter } from 'next/navigation'
 
 const CATEGORIES = [
   { key: 'creative' as const, label: 'CREATIVE', offset: '4%' },
@@ -17,6 +18,8 @@ const CATEGORIES = [
 
 export default function Page() {
   const container = useRef<HTMLDivElement>(null)
+
+  const router = useRouter()
 
   const [activePattern, setActivePattern] = useState<PatternData | null>(null)
   const [originRect, setOriginRect] = useState<DOMRect | null>(null)
@@ -272,6 +275,18 @@ export default function Page() {
     { scope: container }
   )
 
+  const handleNavigate = () => {
+    const masterTl = gsap.timeline({
+      defaults: { ease: 'expo.inOut' },
+      onComplete: () => router.push('/about'),
+    })
+
+    masterTl
+
+      .to('.introTop', { yPercent: 0, duration: 1.2 }, 0)
+      .to('.introBottom', { yPercent: 0, duration: 1.2 }, 0)
+  }
+
   return (
     <div className="container-wrapper" ref={container}>
       {activePattern && originRect && (
@@ -303,9 +318,11 @@ export default function Page() {
 
       {/* ── NAV ── */}
       <nav className="nav">
-        <div className="navLogo">WABS LAB</div>
+        <div className="navLogo cursor-pointer">WABS LAB</div>
         <div className="navRight">
-          <span className="navLink">ABOUT</span>
+          <span className="navLink" onClick={handleNavigate}>
+            ABOUT
+          </span>
           <a
             href="https://github.com/Its-wabs/wabs-lab"
             target="empty"
