@@ -22,7 +22,7 @@ const About = () => {
           short: '(max-height: 849px) and (min-height: 680px)',
           tall: '(min-height: 850px)',
         },
-        (context) => {
+        (_context) => {
           //const { tiny, short } = context.conditions as any
 
           // THE MASTER TIMELINE
