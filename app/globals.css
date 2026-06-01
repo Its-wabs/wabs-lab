@@ -1854,10 +1854,11 @@ a {
   font-family: var(--f-mono);
   font-size: 17px;
   line-height: 1.75;
-  color: var(--ink2);
+  color: var(--ink);
   max-width: 700px;
   position: relative;
   z-index: 2;
+  opacity: 70%;
 }
 .about-blockquote {
   border-left: 3px solid var(--ink);
@@ -1875,6 +1876,7 @@ a {
 
 /* META CARD */
 .about-meta-card {
+  display: block;
   position: absolute;
   top: 5%;
   right: 9.5%;
@@ -2188,4 +2190,51 @@ a {
 .about-nl-btn:hover {
   background: var(--accent);
   color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .about-main {
+    margin-bottom: 40%;
+  }
+  .about-meta-card {
+    display: none;
+  }
+
+  .about-paper-bg {
+    width: 75%;
+    scale: 1;
+  }
+
+  .about-s1 {
+    margin-top: 15%;
+  }
+
+  .about-body {
+    font-size: 15px;
+    max-width: 400px;
+  }
+
+  .about-s2 {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  .about-s3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-s3-right {
+    display: none;
+  }
+
+  .about-newsletter {
+    position: absolute;
+    bottom: -200px;
+    width: 90vw;
+    padding: 70px;
+  }
 }
