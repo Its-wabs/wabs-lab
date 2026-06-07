@@ -2264,6 +2264,14 @@ a {
   }
 }
 
+@media (max-height: 625px) {
+  .about-main {
+    height: 330vh;
+
+    margin-bottom: 20%;
+  }
+}
+
 @media (max-width: 480px) {
   .about-tab {
     align-self: flex-end;
