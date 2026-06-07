@@ -2267,6 +2267,13 @@ a {
 @media (max-height: 625px) {
   .about-main {
     height: 330vh;
+    margin-bottom: 20%;
+  }
+}
+
+@media (max-height: 655px) {
+  .about-main {
+    height: 320vh;
 
     margin-bottom: 20%;
   }
