@@ -2133,7 +2133,7 @@ a {
   position: absolute;
   bottom: -40px;
   left: 50%;
-  transform: translateX(-50%); /* Perfectly centers it horizontally */
+  transform: translateX(-50%);
   width: 60vw;
   background: #8a9070;
   padding: 80px;
@@ -2143,7 +2143,7 @@ a {
   align-items: center;
   gap: 28px;
   rotate: 0.1deg;
-  z-index: 10; /* Ensures it stays stacked cleanly above the background */
+  z-index: 10;
 }
 .about-nl-text {
   font-family: var(--font-offbit);
@@ -2234,6 +2234,61 @@ a {
   .about-newsletter {
     position: absolute;
     bottom: -200px;
+    width: 90vw;
+    padding: 70px;
+  }
+}
+
+@media (max-height: 768px) {
+  .about-main {
+    height: 270vh;
+
+    margin-bottom: 20%;
+  }
+
+  .about-paper-bg {
+    width: 80%;
+    scale: 1;
+  }
+
+  .about-s1 {
+    margin-left: 25%;
+  }
+
+  .about-meta-card {
+    right: 1.5%;
+  }
+
+  .about-newsletter {
+    bottom: -220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-tab {
+    align-self: flex-end;
+    padding: 0.35rem 1.8rem;
+    padding-bottom: 1.9rem;
+  }
+  .about-main {
+    margin-bottom: 55%;
+  }
+  .about-meta-card {
+    display: none;
+  }
+
+  .about-body {
+    font-size: 15px;
+    max-width: 300px;
+  }
+
+  .about-principle-body {
+    display: none;
+  }
+
+  .about-newsletter {
+    position: absolute;
+    bottom: -250px;
     width: 90vw;
     padding: 70px;
   }
